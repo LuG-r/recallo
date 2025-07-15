@@ -12,11 +12,13 @@ CREATE TABLE users(
 **2. Collections**
 A collection is a group of flashcards. Each user can create many collections
 ```sql
-id             INTEGER PRIMARY KEY
-user_id        INTEGER REFERENCES users(id)
-name           TEXT
-description    TEXT
-created_at     TIMESTAMP
+CREATE TABLE collections(
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES users(id),
+    name TEXT NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 **3. Flashcards**
