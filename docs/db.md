@@ -25,11 +25,21 @@ CREATE TABLE collections(
 **3. Flashcards**
 Each flashcard belongs to a collection so there must be a default collection. (This should be configurable by the user)
 ```sql
-id               INTEGER PRIMARY KEY
-collection_id    INTEGER REFERENCES collections(id)
-front            TEXT
-back             TEXT
-created_at       TIMESTAMP
+CREATE TABLE flashcards(
+    id SERIAL PRIMARY KEY,
+    collection_id INTEGER REFERENCES collections(id) ON DELETE CASCADE,
+    front TEXT NOT NULL,
+    back TEXT NOT NULL,
+
+    -- SM-2 Scheduling fields:
+    ease_factor REAL DEFAULT 2.5,     -- Initial ease factor
+    interval INTEGER DEFAULT 0,       -- Days until next review
+    repetitions INTEGER DEFAULT 0,    -- Consecutive successful reviews
+    due_date DATE,                    -- Next scheduled review date
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
 
 **4. Reviews**
